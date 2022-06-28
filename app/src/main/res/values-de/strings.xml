@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Artist Grid</string>
+    <string name="label_linewidth">Dicke der Linien</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="label_cols">Spaltenlinien</string>
+    <string name="label_rows">Zeilenlinien</string>
+    <string name="label_colorpicker">Farbwerte anzeigen</string>
+    <string name="color">Farbe in RGB</string>
+    <string name="action_share">Teilen ...</string>
+    <string name="send_to">Teilen ...</string>
+    <string name="settings_activity_label">Einstellungen</string>
+    <string name="action_fullscreen">Vollbild</string>
+    <string name="action_grid">Raster ändern</string>
+    <string name="action_filter_comic">Comicfilter</string>
+    <string name="action_filter_edges">Kantenfilter</string>
+    <string name="label_lineAlpha">Transparenz</string>
+    <string name="label_linecolor">Farbe der Linien</string>
+    <string-array name="colors_array">
+        <item>Schwarz</item>
+        <item>Weiß</item>
+        <item>Rot</item>
+        <item>Grün</item>
+        <item>Blau</item>
+        <item>Cyan</item>
+        <item>Magenta</item>
+        <item>Gelb</item>
+    </string-array>
+    <string name="action_menu_filter">Bildfilter</string>
+    <string name="header_settings_experimental">Experimentell</string>
+    <string name="header_settings_grid">Rasterzellen</string>
+    <string name="header_settings_line">Rasterlinien</string>
+    <string name="label_square_grid">Quadratische Zellen</string>
+    <string name="action_filter_gray">Schwarz-Weiß</string>
+    <string name="action_filter_reset">Zurücksetzen</string>
+    <string name="label_savefileonexit">Bild immer speichern</string>
+</resources>
