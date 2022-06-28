@@ -39,6 +39,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.ortiz.touchview.TouchImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,19 +50,14 @@ import java.io.OutputStream;
 import at.juggle.artistgrid.R;
 
 public class MainActivity extends AppCompatActivity {
-    private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_SETTINGS_ACTIVITY = 2;
     public final static String PREFS_NAME = "PrefsFileArtistGrid";
     public final static String IMG_CACHED = "image.png";
-    public final static String IMG_CACHED_FILTERED = "image_filtered.png";
-    int rows, cols, lineWidth, alpha;
     private int lineColor;
     boolean colorpicker, squareGrid, saveFileOnExit;
     Bitmap buffer = null, original = null;
     private float maxImageSide = 1200;
 
-    private int currentGridSizeIndex = 0;
-    int[] lineColors = new int[] {Color.BLACK, Color.WHITE, Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.YELLOW};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,39 +70,36 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_folder_open).colorRes(R.color.colorPrimaryDark).actionBarSize());
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-//                int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
-//                        Manifest.permission.READ_EXTERNAL_STORAGE);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_folder_open).colorRes(R.color.colorPrimaryDark).actionBarSize());
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+//                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //
-//                if (permissionCheck == PackageManager.PERMISSION_GRANTED)
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
+////                int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
+////                        Manifest.permission.READ_EXTERNAL_STORAGE);
+////
+////                if (permissionCheck == PackageManager.PERMISSION_GRANTED)
+//                startActivityForResult(i, RESULT_LOAD_IMAGE);
+//            }
+//        });
 
-        final FloatingActionButton fabfull = (FloatingActionButton) findViewById(R.id.leaveFullscreenButton);
-        fabfull.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_chevron_down).colorRes(R.color.colorPrimaryDark).actionBarSize());
-        fabfull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fabfull.setVisibility(View.INVISIBLE);
-                getSupportActionBar().show();
-            }
-        });
+//        final FloatingActionButton fabfull = (FloatingActionButton) findViewById(R.id.leaveFullscreenButton);
+//        fabfull.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_chevron_down).colorRes(R.color.colorPrimaryDark).actionBarSize());
+//        fabfull.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fabfull.setVisibility(View.INVISIBLE);
+//                getSupportActionBar().show();
+//            }
+//        });
 
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        rows = settings.getInt("rows", 4);
-        cols = settings.getInt("cols", 3);
-        lineWidth = settings.getInt("lineWidth", 2);
-        alpha = settings.getInt("lineAlpha", 128);
+
         lineColor = settings.getInt("lineColor", 0);
         colorpicker = settings.getBoolean("colorpicker", false);
         saveFileOnExit = settings.getBoolean("savefileonexit", true);
@@ -118,25 +111,58 @@ public class MainActivity extends AppCompatActivity {
         // Get the intent that started this activity
         Intent intent = getIntent();
         // Figure out what to do based on the intent type
-        if (intent != null && intent.getType()!=null && intent.getType().indexOf("image/") != -1) {
-            Uri data = intent.getData();
-            if (data == null) data = intent.getClipData().getItemAt(0).getUri();
+        if (intent != null ) {
+            String uri = intent.getStringExtra("imageUri");
+            Uri data = Uri.parse(uri);
+//            Uri data = intent.getStringExtra("imageUri");
+
             if (data !=null ) openImage(data);
             else {
                 Toast.makeText(getApplicationContext(), "Error: Could not open image!", Toast.LENGTH_LONG).show();
             }
         }
+
+
+        findViewById(R.id.normal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (original!=null) applyFilters(3);
+            }
+        });
+        findViewById(R.id.dark).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (original!=null){
+                    applyFilters(3);
+                    applyFilters(0);
+                }
+            }
+        });
+        findViewById(R.id.light).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (original!=null){
+                    applyFilters(3);
+                    applyFilters(2);
+                }
+            }
+        });
+
+
+
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_share).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_share).colorRes(R.color.colorWhite).actionBarSize());
-        menu.findItem(R.id.action_save).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_save).colorRes(R.color.colorWhite).actionBarSize());
-        menu.findItem(R.id.action_fullscreen).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_arrows_alt).colorRes(R.color.colorWhite).actionBarSize());
-        menu.findItem(R.id.action_grid).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_th).colorRes(R.color.colorWhite).actionBarSize());
-        menu.findItem(R.id.action_menu_filter).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_filter).colorRes(R.color.colorWhite).actionBarSize());
+        menu.findItem(R.id.id_next).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_share).colorRes(R.color.colorWhite).actionBarSize());
+//        menu.findItem(R.id.action_save).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_save).colorRes(R.color.colorWhite).actionBarSize());
+//        menu.findItem(R.id.action_fullscreen).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_arrows_alt).colorRes(R.color.colorWhite).actionBarSize());
+//        menu.findItem(R.id.action_grid).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_th).colorRes(R.color.colorWhite).actionBarSize());
+//        menu.findItem(R.id.action_menu_filter).setIcon(new IconDrawable(this, FontAwesomeIcons.fa_filter).colorRes(R.color.colorWhite).actionBarSize());
         return true;
     }
 
@@ -148,27 +174,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, DisplaySettingsActivity.class);
-            startActivityForResult(intent, RESULT_SETTINGS_ACTIVITY);
-            return true;
-        }  else if (id == R.id.action_filter_comic) {
-            if (original!=null) applyFilters(0);
-        } else if (id == R.id.action_filter_edges) {
-            if (original!=null) applyFilters(1);
-        } else if (id == R.id.action_filter_gray) {
-            if (original!=null) applyFilters(2);
-        } else if (id == R.id.action_filter_reset) {
-            if (original!=null) applyFilters(3);
-        } else if (id == R.id.action_fullscreen) {
-            // hide status bar
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-            androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) actionBar.hide();
-            findViewById(R.id.leaveFullscreenButton).setVisibility(View.VISIBLE);
-        } else if (id == R.id.action_share) {
+       if (id == R.id.id_next) {
+           if (buffer == null) return true;
+           ByteArrayOutputStream stream = new ByteArrayOutputStream();
+           buffer.compress(Bitmap.CompressFormat.PNG, 100, stream);
+           byte[] byteArray = stream.toByteArray();
+
+           Intent in1 = new Intent(this, ResultActivity.class);
+           in1.putExtra("image",byteArray);
+           startActivity(in1);
+        }else if (id == R.id.action_share) {
             try {
 //                File outputDir = getApplicationContext().getCacheDir(); // context being the Activity pointer
 //                File outputFile = File.createTempFile("image", "jpeg", outputDir);
@@ -214,15 +229,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            openImage(selectedImage);
-        }
-    }
 
     private void openImage(Uri selectedImage) {
         try {
@@ -264,16 +271,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap tmp1 = Bitmap.createBitmap(pixels, 0, original.getWidth(), original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             Bitmap tmp2 = Bitmap.createBitmap(pixels2, 0, original.getWidth(), original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             original = combineWithOverlay(tmp1, tmp2);
-        } else if (which==1) { // edges only
-            InvertFilter invertFilter = new InvertFilter();
-            GrayscaleFilter grayscaleFilter = new GrayscaleFilter();
-            EdgeFilter edgeFilter = new EdgeFilter();
-            int[] pixels = AndroidUtils.bitmapToIntArray(original);
-            pixels = grayscaleFilter.filter(pixels, original.getWidth(), original.getHeight());
-            pixels = edgeFilter.filter(pixels, original.getWidth(), original.getHeight());
-            pixels = invertFilter.filter(pixels, original.getWidth(), original.getHeight());
-            original = Bitmap.createBitmap(pixels, 0, original.getWidth(), original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
-        } else if (which==2) { // black & white
+        }  else if (which==2) { // black & white
             OilFilter grayscaleFilter = new OilFilter();
             int[] pixels = AndroidUtils.bitmapToIntArray(original);
             pixels = grayscaleFilter.filter(pixels, original.getWidth(), original.getHeight());
@@ -314,11 +312,6 @@ public class MainActivity extends AppCompatActivity {
         if (bitmap==null) return;
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
-
-        Paint linePaint = new Paint();
-        linePaint.setColor(lineColors[this.lineColor]);
-        linePaint.setAlpha(alpha);
-
 
         buffer = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
@@ -363,12 +356,7 @@ public class MainActivity extends AppCompatActivity {
         // All objects are from android.context.Context
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("rows", rows);
-        editor.putInt("cols", cols);
-        editor.putInt("lineWidth", lineWidth);
-        editor.putInt("lineAlpha", alpha);
         editor.putBoolean("colorpicker", colorpicker);
-        editor.putBoolean("squareGrid", squareGrid);
         editor.putBoolean("savefileonexit", saveFileOnExit);
         // Commit the edits!
         editor.commit();
@@ -386,21 +374,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        rows = settings.getInt("rows", 4);
-        cols = settings.getInt("cols", 3);
-        lineWidth = settings.getInt("lineWidth", 3);
-        colorpicker = settings.getBoolean("colorpicker", false);
-        String tmp = settings.getString("currentImage", null);
-        try {
-            File file = new File(getApplicationContext().getFilesDir(), IMG_CACHED);
-            if (file.exists()) {
-                original = BitmapFactory.decodeStream(new FileInputStream(file));
-                paintLines(original);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        rows = settings.getInt("rows", 4);
+//        cols = settings.getInt("cols", 3);
+//        lineWidth = settings.getInt("lineWidth", 3);
+//        colorpicker = settings.getBoolean("colorpicker", false);
+//        String tmp = settings.getString("currentImage", null);
+//        try {
+//            File file = new File(getApplicationContext().getFilesDir(), IMG_CACHED);
+//            if (file.exists()) {
+//                original = BitmapFactory.decodeStream(new FileInputStream(file));
+//                paintLines(original);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private static class ColorPickerOnTouchListener implements View.OnTouchListener {

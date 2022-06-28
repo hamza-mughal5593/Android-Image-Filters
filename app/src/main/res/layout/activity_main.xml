@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:keepScreenOn="true"
     tools:context="at.juggle.imagegrid.MainActivity">
 
@@ -26,26 +27,52 @@
 
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <include layout="@layout/content_main" />
+    <RelativeLayout
+        android:id="@+id/imgmain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottommain"
+        android:layout_below="@+id/toolbar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="at.juggle.imagegrid.MainActivity"
+        tools:showIn="@layout/activity_main">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimaryLight"
-        android:alpha="128"
-        android:src="@android:drawable/ic_menu_gallery" />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/leaveFullscreenButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimaryLight"
-        android:alpha="128"
-        android:visibility="invisible"
-        android:src="@android:drawable/ic_menu_more" />
+        <com.ortiz.touchview.TouchImageView
+            android:id="@+id/mainImageView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+   <LinearLayout
+       android:padding="10dp"
+       android:weightSum="3"
+       android:orientation="horizontal"
+       android:layout_alignParentBottom="true"
+       android:id="@+id/bottommain"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <Button
+           android:id="@+id/normal"
+android:layout_weight="1"
+           android:text="Normal"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+       <Button
+           android:id="@+id/dark"
+           android:layout_weight="1"
+           android:text="Dark"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+       <Button
+           android:id="@+id/light"
+           android:layout_weight="1"
+           android:text="Light"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"/>
+   </LinearLayout>
+
+
+</RelativeLayout>
