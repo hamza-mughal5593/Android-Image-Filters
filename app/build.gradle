@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.juggle.imagegrid"
         minSdkVersion 21
-        targetSdkVersion 21
-        versionCode 22
-        versionName "3.2"
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -20,9 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.1' // http://joanzapata.com/android-iconify/
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.1' // http://joanzapata.com/android-iconify/
 }

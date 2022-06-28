@@ -1,14 +1,12 @@
 package at.juggle.imagegrid;
 
-import android.app.DialogFragment;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;

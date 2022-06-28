@@ -2,8 +2,6 @@ package at.juggle.imagegrid;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -18,10 +16,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,14 +27,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jabistudio.androidjhlabs.filter.DoGFilter;
 import com.jabistudio.androidjhlabs.filter.EdgeFilter;
 import com.jabistudio.androidjhlabs.filter.GrayscaleFilter;
 import com.jabistudio.androidjhlabs.filter.InvertFilter;
 import com.jabistudio.androidjhlabs.filter.OilFilter;
 import com.jabistudio.androidjhlabs.filter.PosterizeFilter;
-import com.jabistudio.androidjhlabs.filter.QuantizeFilter;
-import com.jabistudio.androidjhlabs.filter.WaterFilter;
 import com.jabistudio.androidjhlabs.filter.util.AndroidUtils;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
@@ -50,7 +45,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import at.juggle.artistgrid.R;
 
@@ -171,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             View decorView = getWindow().getDecorView();
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
-            android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+            androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.hide();
             findViewById(R.id.leaveFullscreenButton).setVisibility(View.VISIBLE);
         } else if (id == R.id.action_share) {
@@ -333,28 +327,28 @@ public class MainActivity extends AppCompatActivity {
 //        colorFilter.setColorFilter(new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN));
 //        colorFilter.setFilterBitmap(true);
         c.drawBitmap(bitmap, 0, 0, null);
-        int rowOffset = h / (rows + 1);
-        if (!squareGrid) {
-            for (int i = 0; i < cols; i++) {
-                for (int k = 0; k < lineWidth; k++) {
-                    c.drawLine((i + 1) * w / (cols + 1) + k, 0, (i + 1) * w / (cols + 1) + k, h, linePaint);
-                }
-            }
-        } else if (rows>0) {
-            int numColLines = w / rowOffset;
-            int offsetCols = (w%rowOffset)/2; // todo: make configurable ("where image starts")
-            for (int i=0; i<= numColLines; i++) {
-                for (int k = 0; k < lineWidth; k++) {
-                    c.drawLine((i) * rowOffset + k + offsetCols, 0, (i) * rowOffset + k + offsetCols, h, linePaint);
-                }
-            }
-        }
-
-        for (int i = 0; i < rows; i++) {
-            for (int k = 0; k < lineWidth; k++) {
-                c.drawLine(0, (i + 1) * rowOffset + k, w, (i + 1) * rowOffset + k, linePaint );
-            }
-        }
+//        int rowOffset = h / (rows + 1);
+//        if (!squareGrid) {
+//            for (int i = 0; i < cols; i++) {
+//                for (int k = 0; k < lineWidth; k++) {
+//                    c.drawLine((i + 1) * w / (cols + 1) + k, 0, (i + 1) * w / (cols + 1) + k, h, linePaint);
+//                }
+//            }
+//        } else if (rows>0) {
+//            int numColLines = w / rowOffset;
+//            int offsetCols = (w%rowOffset)/2; // todo: make configurable ("where image starts")
+//            for (int i=0; i<= numColLines; i++) {
+//                for (int k = 0; k < lineWidth; k++) {
+//                    c.drawLine((i) * rowOffset + k + offsetCols, 0, (i) * rowOffset + k + offsetCols, h, linePaint);
+//                }
+//            }
+//        }
+//
+//        for (int i = 0; i < rows; i++) {
+//            for (int k = 0; k < lineWidth; k++) {
+//                c.drawLine(0, (i + 1) * rowOffset + k, w, (i + 1) * rowOffset + k, linePaint );
+//            }
+//        }
 
 
         TouchImageView view = (TouchImageView) findViewById(R.id.mainImageView);
