@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+//        getSupportActionBar().setIcon(R.drawable.splashmain);
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -142,8 +142,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (original!=null){
-                    applyFilters(3);
-                    applyFilters(2);
+                            applyFilters(3);
+                            applyFilters(2);
+
                 }
             }
         });
@@ -183,48 +184,50 @@ public class MainActivity extends AppCompatActivity {
            Intent in1 = new Intent(this, ResultActivity.class);
            in1.putExtra("image",byteArray);
            startActivity(in1);
-        }else if (id == R.id.action_share) {
-            try {
-//                File outputDir = getApplicationContext().getCacheDir(); // context being the Activity pointer
-//                File outputFile = File.createTempFile("image", "jpeg", outputDir);
-                if (buffer!=null) {
-                    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "artistgrid");
-                    if (!directory.exists()) directory.mkdirs();
-                    File outputFile = new File(directory, "grid_" + (android.text.format.DateFormat.format("yyyy_MM_dd-hh_mm_ss", new java.util.Date())) + ".jpg");
-                    FileOutputStream outStream = new FileOutputStream(outputFile);
-                    buffer.compress(Bitmap.CompressFormat.JPEG, 75, outStream);
-                    outStream.flush();
-                    outStream.close();
-                    String uri = MediaStore.Images.Media.insertImage(getContentResolver(), outputFile.getAbsolutePath(), outputFile.getName(), outputFile.getName());
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.setType("image/jpeg");
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
-                    startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (id == R.id.action_save) {
-            if (buffer == null) return true;
-            // save edges file
-            File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "artistgrid");
-            if (!directory.exists()) directory.mkdirs();
-            File toSave = new File(directory, "grid_" + (android.text.format.DateFormat.format("yyyy_MM_dd-hh_mm_ss", new java.util.Date())) + ".png");
-            try {
-                FileOutputStream outStream = new FileOutputStream(toSave);
-                // todo ...
-                buffer.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.flush();
-                outStream.close();
-                Toast.makeText(getApplicationContext(), "Saved to " + directory + "!", Toast.LENGTH_LONG).show();
-                MediaStore.Images.Media.insertImage(getContentResolver(), toSave.getAbsolutePath(), toSave.getName(), toSave.getName());
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Save failed!", Toast.LENGTH_LONG).show();
-            }
-            return true;
         }
+//       else if (id == R.id.action_share) {
+//            try {
+////                File outputDir = getApplicationContext().getCacheDir(); // context being the Activity pointer
+////                File outputFile = File.createTempFile("image", "jpeg", outputDir);
+//                if (buffer!=null) {
+//                    File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "artistgrid");
+//                    if (!directory.exists()) directory.mkdirs();
+//                    File outputFile = new File(directory, "grid_" + (android.text.format.DateFormat.format("yyyy_MM_dd-hh_mm_ss", new java.util.Date())) + ".jpg");
+//                    FileOutputStream outStream = new FileOutputStream(outputFile);
+//                    buffer.compress(Bitmap.CompressFormat.JPEG, 75, outStream);
+//                    outStream.flush();
+//                    outStream.close();
+//                    String uri = MediaStore.Images.Media.insertImage(getContentResolver(), outputFile.getAbsolutePath(), outputFile.getName(), outputFile.getName());
+//                    Intent sendIntent = new Intent();
+//                    sendIntent.setAction(Intent.ACTION_SEND);
+//                    sendIntent.setType("image/jpeg");
+//                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
+//                    startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//       else if (id == R.id.action_save) {
+//            if (buffer == null) return true;
+//            // save edges file
+//            File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "artistgrid");
+//            if (!directory.exists()) directory.mkdirs();
+//            File toSave = new File(directory, "grid_" + (android.text.format.DateFormat.format("yyyy_MM_dd-hh_mm_ss", new java.util.Date())) + ".png");
+//            try {
+//                FileOutputStream outStream = new FileOutputStream(toSave);
+//                // todo ...
+//                buffer.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+//                outStream.flush();
+//                outStream.close();
+//                Toast.makeText(getApplicationContext(), "Saved to " + directory + "!", Toast.LENGTH_LONG).show();
+//                MediaStore.Images.Media.insertImage(getContentResolver(), toSave.getAbsolutePath(), toSave.getName(), toSave.getName());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Toast.makeText(getApplicationContext(), "Save failed!", Toast.LENGTH_LONG).show();
+//            }
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

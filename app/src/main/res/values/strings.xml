@@ -24,6 +24,12 @@
     <string name="action_filter_gray">Black and White</string>
     <string name="action_filter_reset">Reset filters</string>
     <string name="label_savefileonexit">Save image file on exit</string>
+    <string name="file_provider_authority" translatable="false">com.oil.paint.fileprovider</string>
+
+    <string name="no_whatsapp_app" translatable="false">No Whatsapp installed</string>
+    <string name="no_facebook_app" translatable="false">No Facebook installed</string>
+    <string name="no_instagram_app" translatable="false">No Instagram installed</string>
+    <string name="saved_image_message" translatable="false">Photo saved successfully</string>
     <string-array name="colors_array">
         <item>black</item>
         <item>white</item>

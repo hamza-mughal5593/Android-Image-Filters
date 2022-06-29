@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.juggle.imagegrid"
+        applicationId "com.oil.paint"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -26,4 +26,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.1' // http://joanzapata.com/android-iconify/
+
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
+
 }
