@@ -8,7 +8,7 @@
     android:layout_marginRight="16dp"
     android:fitsSystemWindows="true"
     android:parentActivityName="at.juggle.artistgrid.MainActivity"
-    tools:context="at.juggle.imagegrid.DisplaySettingsActivity">
+    tools:context="com.oil.paint.DisplaySettingsActivity">
 
     <!--<android.support.design.widget.AppBarLayout-->
     <!--android:layout_width="match_parent"-->

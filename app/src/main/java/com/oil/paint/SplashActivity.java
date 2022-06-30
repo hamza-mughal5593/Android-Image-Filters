@@ -1,4 +1,4 @@
-package at.juggle.imagegrid;
+package com.oil.paint;
 
 import androidx.appcompat.app.AppCompatActivity;
 

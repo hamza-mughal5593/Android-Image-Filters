@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="at.juggle.imagegrid.SelectImageActivity">
+    tools:context="com.oil.paint.SelectImageActivity">
     <com.google.android.gms.ads.AdView
         android:layout_marginBottom="10dp"
         xmlns:ads="http://schemas.android.com/apk/res-auto"

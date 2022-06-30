@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:keepScreenOn="true"
-    tools:context="at.juggle.imagegrid.MainActivity">
+    tools:context="com.oil.paint.MainActivity">
 
     <!--<android.support.design.widget.AppBarLayout-->
         <!--android:layout_width="match_parent"-->
@@ -34,7 +34,7 @@
         android:layout_above="@+id/bottommain"
         android:layout_below="@+id/toolbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="at.juggle.imagegrid.MainActivity"
+        tools:context="com.oil.paint.MainActivity"
         tools:showIn="@layout/activity_main">
 
         <com.ortiz.touchview.TouchImageView
