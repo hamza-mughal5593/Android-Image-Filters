@@ -38,7 +38,10 @@ public class ResultActivity extends AppCompatActivity {
             public void run() {
                 try {
                     byte[] byteArray = getIntent().getByteArrayExtra("image");
-                    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+                    Bitmap bmp=getIntent().getParcelableExtra("image");
+//                    imageView.setImageBitmap(bitImage);
+//                    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "OilConversion");
                     if (!directory.exists()) directory.mkdirs();
                     outputFile = new File(directory, "OilConversion_" + (android.text.format.DateFormat.format("yyyy_MM_dd-hh_mm_ss", new java.util.Date())) + ".jpg");
